@@ -26,6 +26,8 @@ class FavoritesScreen extends StatelessWidget {
           SliverList.builder(
             itemBuilder: (context, index) => const RhymeListCard(
               isFavorite: true,
+              rhyme: 'Рифма',
+              sourceWord: 'Слово',
             ),
           ),
         ],

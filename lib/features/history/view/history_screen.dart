@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:example/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
@@ -9,10 +10,10 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
+          const SliverAppBar(
             snap: true,
             floating: true,
             title: Center(
@@ -21,12 +22,31 @@ class HistoryScreen extends StatelessWidget {
             elevation: 0,
             surfaceTintColor: Colors.transparent,
           ),
-          SliverToBoxAdapter(child: SizedBox(height: 16)),
-          /*SliverList.builder(
-            itemBuilder: (context, index) => const RhymeListCard(
-              isFavorite: true,
+          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverGrid(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 200,
+                mainAxisSpacing: 10.0,
+                crossAxisSpacing: 10.0,
+                childAspectRatio: 1.6,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  return const RhymeHistoryCard(
+                    rhymes: [
+                      "Рифма 1",
+                      "Рифма 2",
+                      "Рифма 3",
+                      "Рифма 4",
+                    ],
+                  );
+                },
+                childCount: 20,
+              ),
             ),
-          ),*/
+          )
         ],
       ),
     );

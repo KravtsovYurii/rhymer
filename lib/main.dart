@@ -1,4 +1,5 @@
 import 'package:example/router/router.dart';
+import 'package:example/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,15 +18,9 @@ class _RhymerAppState extends State<RhymerApp> {
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Color(0xFFF82B10);
     return MaterialApp.router(
       title: 'Rhymer',
-      theme: ThemeData(
-        primaryColor: primaryColor,
-        scaffoldBackgroundColor: const Color(0xFFEFF1F3),
-        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
-        useMaterial3: true,
-      ),
+      theme: themeData,
       routerConfig: _router.config(),
     );
   }

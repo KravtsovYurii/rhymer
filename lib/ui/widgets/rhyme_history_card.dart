@@ -18,20 +18,31 @@ class RhymeHistoryCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             "Слово",
             style: theme.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w700,
             ),
           ),
-          Wrap(
-            children: rhymes
-                .map((e) => Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: Text(e),
-                    ))
-                .toList(),
+          Flexible(
+            child: Text(
+              rhymes.asMap().entries.map((e) {
+                final sb = StringBuffer();
+                sb.write(e.value);
+                if (e.key != rhymes.length - 1) {
+                  sb.write(",  ");
+                }
+                return sb.toString();
+              }).join(),
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                fontSize: 13,
+                color: theme.hintColor.withOpacity(0.4),
+              ),
+              maxLines: 3,
+            ),
           ),
         ],
       ),
