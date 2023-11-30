@@ -1,13 +1,26 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:example/features/search/bloc/rhymer_list_bloc.dart';
 import 'package:example/features/search/widgets/widgets.dart';
 import 'package:example/ui/ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({
-    super.key,
-  });
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  @override
+  void initState() {
+    BlocProvider.of<RhymerListBloc>(context).add(
+      const SearchRhymer(),
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +57,24 @@ class SearchScreen extends StatelessWidget {
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
-        SliverList.builder(
-          itemBuilder: (context, index) => const RhymeListCard(
-            rhyme: 'Рифма',
-          ),
-        ),
+        BlocBuilder<RhymerListBloc, RhymerListState>(
+          bloc: BlocProvider.of<RhymerListBloc>(context),
+          builder: (context, state) {
+            if (state is RhymerListLoaded) {
+              final rhymes = state.rhymers.name;
+              return SliverList.builder(
+                itemBuilder: (context, index) => RhymeListCard(
+                  rhyme: rhymes,
+                ),
+              );
+            }
+            return const SliverFillRemaining(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          },
+        )
       ],
     );
   }
