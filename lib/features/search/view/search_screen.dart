@@ -14,13 +14,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  @override
-  void initState() {
-    BlocProvider.of<RhymerListBloc>(context).add(
-      const SearchRhymer(),
-    );
-    super.initState();
-  }
+  final _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +31,9 @@ class _SearchScreenState extends State<SearchScreen> {
           surfaceTintColor: Colors.transparent,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(70),
-            child: SearchButton(onTap: () => _showSearchBottomSheet(context)),
+            child: SearchButton(
+                controller: _searchController,
+                onTap: () => _showSearchBottomSheet(context)),
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
@@ -68,6 +64,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               );
             }
+            if (state is RhymerListInitial) {
+              return const SliverFillRemaining(
+                child: RhymesListInitialBanner(),
+              );
+            }
             return const SliverFillRemaining(
               child: Center(
                 child: CircularProgressIndicator(),
@@ -79,16 +80,22 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  void _showSearchBottomSheet(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> _showSearchBottomSheet(BuildContext context) async {
+    final bloc = BlocProvider.of<RhymerListBloc>(context);
+    final query = await showModalBottomSheet<String>(
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       elevation: 0,
       context: context,
-      builder: (context) => const Padding(
-        padding: EdgeInsets.only(top: 85),
-        child: SearchRhymesBottomSheet(),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.only(top: 85),
+        child: SearchRhymesBottomSheet(
+          controller: _searchController,
+        ),
       ),
     );
+    if (query?.isNotEmpty ?? false) {
+      bloc.add(const SearchRhymer());
+    }
   }
 }
