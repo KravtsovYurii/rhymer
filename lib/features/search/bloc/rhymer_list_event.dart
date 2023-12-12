@@ -9,7 +9,4 @@ sealed class RhymerListEvent extends Equatable {
 
 class SearchRhymer extends RhymerListEvent {
   const SearchRhymer();
-
-  @override
-  List<Object> get props => super.props;
 }

@@ -1,10 +1,10 @@
+import 'package:example/repositories/history/models/models.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:realm/realm.dart';
 
 part 'rhymes.g.dart';
 
 @JsonSerializable()
-@RealmModel()
 class Rhymes {
   const Rhymes({required this.name});
 
@@ -13,4 +13,9 @@ class Rhymes {
   final String name;
 
   Map<String, dynamic> toJson() => _$RhymesToJson(this);
+
+  HistoryRhymer toHistory() => HistoryRhymer(
+        Uuid.v4().toString(),
+        name,
+      );
 }
