@@ -25,9 +25,9 @@ class _RhymerApiClient implements RhymerApiClient {
   String? baseUrl;
 
   @override
-  Future<Rhymes> getRhymesList() async {
+  Future<Rhymes> getRhymesList(String word) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'word': word};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result =
@@ -38,7 +38,7 @@ class _RhymerApiClient implements RhymerApiClient {
     )
             .compose(
               _dio.options,
-              '/character/196',
+              '/character/394',
               queryParameters: queryParameters,
               data: _data,
             )

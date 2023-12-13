@@ -1,4 +1,5 @@
 import 'package:example/api/api.dart';
+import 'package:example/features/history/bloc/history_rhymes_bloc.dart';
 import 'package:example/features/search/bloc/rhymer_list_bloc.dart';
 import 'package:example/repositories/history/history_repository.dart';
 import 'package:example/repositories/history/models/models.dart';
@@ -33,13 +34,20 @@ class _RhymerAppState extends State<RhymerApp> {
   Widget build(BuildContext context) {
     final historyRepository = HistoryRepository(realm: widget.realm);
 
-    return BlocProvider(
-      create: (context) => RhymerListBloc(
-        apiClient: RhymerApiClient.create(
-          apiUrl: dotenv.env["API_URL"],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => RhymerListBloc(
+            apiClient: RhymerApiClient.create(apiUrl: dotenv.env["API_URL"]),
+            historyRepository: historyRepository,
+          ),
         ),
-        historyRepository: historyRepository,
-      ),
+        BlocProvider(
+          create: (context) => HistoryRhymesBloc(
+            historyRepository: historyRepository,
+          ),
+        ),
+      ],
       child: MaterialApp.router(
         title: 'Rhymer',
         theme: themeData,

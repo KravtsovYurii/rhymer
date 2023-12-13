@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:example/features/history/bloc/history_rhymes_bloc.dart';
 import 'package:example/features/search/bloc/rhymer_list_bloc.dart';
 import 'package:example/features/search/widgets/widgets.dart';
 import 'package:example/ui/ui.dart';
@@ -38,18 +39,27 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
         SliverToBoxAdapter(
-          child: SizedBox(
-            height: 100,
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              scrollDirection: Axis.horizontal,
-              itemCount: 10,
-              separatorBuilder: (context, index) => const SizedBox(width: 16),
-              itemBuilder: (context, index) {
-                final rhymes = List.generate(4, (index) => "Рифма $index");
-                return RhymeHistoryCard(rhymes: rhymes);
-              },
-            ),
+          child: BlocBuilder<HistoryRhymesBloc, HistoryRhymesState>(
+            builder: (context, state) {
+              if (state is! HistoryRhymesLoaded) return const SizedBox();
+              return SizedBox(
+                height: 100,
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: state.rhymes.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 16),
+                  itemBuilder: (context, index) {
+                    final rhymes = state.rhymes[index];
+                    return RhymeHistoryCard(
+                      rhymes: rhymes.name,
+                      word: rhymes.word,
+                    );
+                  },
+                ),
+              );
+            },
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
@@ -57,10 +67,10 @@ class _SearchScreenState extends State<SearchScreen> {
           bloc: BlocProvider.of<RhymerListBloc>(context),
           builder: (context, state) {
             if (state is RhymerListLoaded) {
-              final rhymes = state.rhymers.name;
+              final rhymes = state.rhymers.episode;
               return SliverList.builder(
                 itemBuilder: (context, index) => RhymeListCard(
-                  rhyme: rhymes,
+                  rhyme: rhymes.first,
                 ),
               );
             }
@@ -95,7 +105,7 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
     if (query?.isNotEmpty ?? false) {
-      bloc.add(const SearchRhymer());
+      bloc.add(SearchRhymer(query: query!));
     }
   }
 }

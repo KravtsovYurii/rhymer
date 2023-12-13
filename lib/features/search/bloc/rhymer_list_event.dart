@@ -8,5 +8,10 @@ sealed class RhymerListEvent extends Equatable {
 }
 
 class SearchRhymer extends RhymerListEvent {
-  const SearchRhymer();
+  const SearchRhymer({required this.query});
+
+  final String query;
+
+  @override
+  List<Object> get props => super.props..addAll([query]);
 }

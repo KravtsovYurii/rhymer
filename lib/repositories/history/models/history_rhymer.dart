@@ -6,5 +6,6 @@ part 'history_rhymer.g.dart';
 class _HistoryRhymer {
   @PrimaryKey()
   late String id;
-  late String name;
+  late String word;
+  late List<String> name;
 }

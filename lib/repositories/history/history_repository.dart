@@ -18,6 +18,6 @@ class HistoryRepository implements HistoryRepositoryInterface {
 
   @override
   Future<void> clear() async {
-    realm.deleteAll();
+    realm.write(() => realm.deleteAll<HistoryRhymer>());
   }
 }

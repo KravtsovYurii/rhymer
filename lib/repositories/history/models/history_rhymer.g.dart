@@ -11,10 +11,13 @@ class HistoryRhymer extends _HistoryRhymer
     with RealmEntity, RealmObjectBase, RealmObject {
   HistoryRhymer(
     String id,
-    String name,
-  ) {
+    String word, {
+    Iterable<String> name = const [],
+  }) {
     RealmObjectBase.set(this, 'id', id);
-    RealmObjectBase.set(this, 'name', name);
+    RealmObjectBase.set(this, 'word', word);
+    RealmObjectBase.set<RealmList<String>>(
+        this, 'name', RealmList<String>(name));
   }
 
   HistoryRhymer._();
@@ -25,9 +28,16 @@ class HistoryRhymer extends _HistoryRhymer
   set id(String value) => RealmObjectBase.set(this, 'id', value);
 
   @override
-  String get name => RealmObjectBase.get<String>(this, 'name') as String;
+  String get word => RealmObjectBase.get<String>(this, 'word') as String;
   @override
-  set name(String value) => RealmObjectBase.set(this, 'name', value);
+  set word(String value) => RealmObjectBase.set(this, 'word', value);
+
+  @override
+  RealmList<String> get name =>
+      RealmObjectBase.get<String>(this, 'name') as RealmList<String>;
+  @override
+  set name(covariant RealmList<String> value) =>
+      throw RealmUnsupportedSetError();
 
   @override
   Stream<RealmObjectChanges<HistoryRhymer>> get changes =>
@@ -43,7 +53,9 @@ class HistoryRhymer extends _HistoryRhymer
     return const SchemaObject(
         ObjectType.realmObject, HistoryRhymer, 'HistoryRhymer', [
       SchemaProperty('id', RealmPropertyType.string, primaryKey: true),
-      SchemaProperty('name', RealmPropertyType.string),
+      SchemaProperty('word', RealmPropertyType.string),
+      SchemaProperty('name', RealmPropertyType.string,
+          collectionType: RealmCollectionType.list),
     ]);
   }
 }

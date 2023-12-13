@@ -16,6 +16,6 @@ abstract class RhymerApiClient {
     return RhymerApiClient(dio);
   }
 
-  @GET('/character/196')
-  Future<Rhymes> getRhymesList();
+  @GET('/character/394')
+  Future<Rhymes> getRhymesList(@Query("word") String word);
 }

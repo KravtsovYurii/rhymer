@@ -38,10 +38,14 @@ class RhymeListCard extends StatelessWidget {
                   ),
                 ),
               ],
-              Text(
-                rhyme,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
+              SizedBox(
+                width: 200,
+                child: Text(
+                  rhyme,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],

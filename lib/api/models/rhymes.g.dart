@@ -7,11 +7,12 @@ part of 'rhymes.dart';
 // **************************************************************************
 
 Rhymes _$RhymesFromJson(Map<String, dynamic> json) => Rhymes(
-      name: json['name'] as String,
+      episode:
+          (json['episode'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$RhymesToJson(Rhymes instance) => <String, dynamic>{
-      'name': instance.name,
+      'episode': instance.episode,
     };
 
 // **************************************************************************

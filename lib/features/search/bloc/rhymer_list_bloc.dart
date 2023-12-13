@@ -26,8 +26,8 @@ class RhymerListBloc extends Bloc<RhymerListEvent, RhymerListState> {
   ) async {
     try {
       emit(RhymerListLoading());
-      final rhymers = await _apiClient.getRhymesList();
-      final historyRhymer = rhymers.toHistory();
+      final rhymers = await _apiClient.getRhymesList(event.query);
+      final historyRhymer = rhymers.toHistory(event.query);
       _historyRepository.setRhymer(historyRhymer);
       emit(RhymerListLoaded(rhymers));
     } catch (e) {
